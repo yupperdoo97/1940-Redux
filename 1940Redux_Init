@@ -43,7 +43,7 @@ campaignTrail_temp.difficulty_level_json = JSON.parse("[{\"model\": \"campaign_t
 campaignTrail_temp.credits = 'u/yupperdoo97. Special thanks to Astro for playtesting and coding help. Banner and theme by Gelid Lagopus. Some pictures done by Answerisme. Music box code done by Thatchmaster. Additional coding help from Tex and BigTobyLarone';
 nct_stuff.themes[nct_stuff.selectedTheme].text_col = "black"
 
-HistHexcolour=["#003cff","#ff0000","#ffe100","#16cf00"]; HistName=[" Franklin D. Roosevelt"," Thomas Dewey"," Unpledged Electors"," Others"]; HistEV=[432,99,0,0]; HistPV=["25,612,916","22,017,929","143,238","210,779"]; HistPVP=["53.4%","45.9%","0.3%","0.4%"];
+HistHexcolour=["#003cff","#ff0000","#ffe100","#16cf00"]; HistName=[" Franklin D. Roosevelt"," Wendell Willkie"," Others"]; HistEV=[449,82,0,0]; HistPV=["27,313,945","22,347,744","240,424"]; HistPVP=["54.74%","44.78%","0.48%"];
 
 campaignTrail_temp.modBoxTheme = {
      "header_color": "#f4df59",
@@ -519,3 +519,5 @@ let z = new MutationObserver((mutationsList, observer) => {
 
   z.observe(document, { subtree: true, childList: true });
 } 
+
+
