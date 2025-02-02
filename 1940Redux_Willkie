@@ -330,7 +330,7 @@ return  "<h3>Error</h3><p>Contact Yupperdoo if you get this message.</p>"
 vpName = "Charles McNary";
 
 vpTable = {
-    "Franklin D. Roosevelt" : Henry Wallace,
+    "Franklin D. Roosevelt" : "Henry Wallace",
     "Wendell Willkie" : "vpName",
     "Others" : "various"
 }
