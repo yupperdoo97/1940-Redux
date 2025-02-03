@@ -686,4 +686,4 @@ campaignTrail_temp.candidate_json[1]["fields"].last_name = "Willkie";
 else {
 return false
 }
-}
+  }
