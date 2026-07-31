@@ -64,58 +64,11 @@ return "<h3>'ROOSEVELT BEATS BACK WILLKIE; PRESIDENT WINS THIRD CONSECUTIVE TERM
 return  "<h3>Error</h3><p>Contact Yupperdoo if you get this message.</p>"
 }
 }
-// Normalize strings
-function normalizeName(name) {
-  if (!name) return "";
-  return name
-    .toLowerCase()
-    .replaceAll(".", "")
-    .replaceAll("-", "")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-// ----------------------------
-// Build VP table dynamically
-// ----------------------------
-function buildVpTable() {
-  // Read the selected VP from the mod’s state
-  const chosenVP = normalizeName(campaignTrail_temp.running_mate_last_name);
-
-  // Default is Wallace, but switch depending on selection
-  let rooseveltVP = "Henry A. Wallace";
-
-  if (chosenVP === "hull") rooseveltVP = "Cordell Hull";
-  else if (chosenVP === "bankhead") rooseveltVP = "John H. Bankhead";
-  else if (chosenVP === "byrnes") rooseveltVP = "James F. Byrnes";
-
-  return {
-    "franklin roosevelt": rooseveltVP,
-    "wendell willkie": "Charles McNary",
-    "others": "various",
-    "undecided": "N/A"
-  };
-}
-
-function buildVpTableHistorical() {
-  // historical table uses the same VP
-  return buildVpTable();
-}
-
-// Get VP safely
-function getVP(name, table) {
-  const clean = normalizeName(name);
-  if (table.hasOwnProperty(clean)) {
-    return table[clean];
-  }
-  return "Henry A. Wallace";
-}
-
-
-// --------------------------------
-// Main function
-// --------------------------------
+// -------------------------
+// BUILD LIVE VP TABLE
+// -------------------------
 function onGameWindowChangeCandidates() {
+
   const resultsTableHolder = document.getElementById("overall_details_container");
 
   if (!resultsTableHolder || resultsTableHolder.classList.contains("done")) {
@@ -124,49 +77,182 @@ function onGameWindowChangeCandidates() {
 
   resultsTableHolder.classList.add("done");
 
-  // Build VP tables *after* running mate is chosen
-  const vpTable = buildVpTable();
-  const vpTableHistorical = buildVpTableHistorical();
+  let vpTable = {};
 
-  // --- LIVE RESULTS TABLE ---
-  const resultsTable = resultsTableHolder.childNodes[3].childNodes[3].children[0];
+  let chosenP = campaignTrail_temp.candidate_last_name;
+  let chosenVP = campaignTrail_temp.running_mate_last_name;
 
-  for (let i = 0; i < resultsTable.children.length; i++) {
-    const row = resultsTable.children[i];
-    const name = row.firstChild.innerText;
+  // Roosevelt running mates
+  const rooseveltVPs = {
+    "Wallace": "Henry Wallace",
+    "Hull": "Cordell Hull",
+    "Bankhead": "William Bankhead",
+    "Byrnes": "James Byrnes"
+  };
+
+  // Willkie nominee running mates
+  const willkieVPs = {
+    "McNary": "Charles McNary",
+    "Dewey": "Thomas Dewey",
+    "Taft": "Robert Taft",
+    "Vandenberg": "Arthur Vandenberg"
+  };
+
+  // Dewey nominee running mates
+  const deweyVPs = {
+    "Willkie": "Wendell Willkie",
+    "McNary": "Charles McNary"
+  };
+
+  // -------------------------
+  // LIVE TABLE
+  // -------------------------
+
+  if (chosenP === "Roosevelt") {
+
+    vpTable = {
+      "Franklin Roosevelt": rooseveltVPs[chosenVP] || "Henry Wallace",
+      "Wendell Willkie": "Charles McNary",
+      "Others": "Various",
+      "Undecided": "N/A"
+    };
+
+  }
+
+  else if (chosenP === "Willkie") {
+
+    vpTable = {
+      "Wendell Willkie": willkieVPs[chosenVP] || "Charles McNary",
+      "Franklin Roosevelt": "Henry Wallace",
+      "Others": "Various",
+      "Undecided": "N/A"
+    };
+
+  }
+
+  else if (chosenP === "Dewey") {
+
+    vpTable = {
+      "Thomas Dewey": deweyVPs[chosenVP] || "Wendell Willkie",
+      "Franklin Roosevelt": "Henry Wallace",
+      "Others": "Various",
+      "Undecided": "N/A"
+    };
+
+  }
+
+  else if (chosenP === "Taft") {
+
+    vpTable = {
+      "Robert Taft": "Wendell Willkie",
+      "Franklin Roosevelt": "Henry Wallace",
+      "Others": "Various",
+      "Undecided": "N/A"
+    };
+
+  }
+
+  else if (chosenP === "Vandenberg") {
+
+    vpTable = {
+      "Arthur Vandenberg": "Wendell Willkie",
+      "Franklin Roosevelt": "Henry Wallace",
+      "Others": "Various",
+      "Undecided": "N/A"
+    };
+
+  }
+
+  // -------------------------
+  // BUILD HISTORICAL TABLE
+  // -------------------------
+
+  let vpTableHistorical = {
+    "Franklin Roosevelt": "Henry Wallace",
+    "Wendell Willkie": "Charles McNary",
+    "Others": "Various",
+    "Undecided": "N/A"
+  };
+
+  // -------------------------
+  // LIVE RESULTS TABLE
+  // -------------------------
+
+  const resultsTable =
+    resultsTableHolder.childNodes[3].childNodes[3].children[0];
+
+  for (let i = 0; i < resultsTable.rows.length; i++) {
+
+    const row = resultsTable.rows[i];
+
     row.insertCell(1);
 
     if (i === 0) {
-      row.children[1].innerHTML = `<span style="font-weight:bold">Running Mate</span>`;
+
+      row.cells[1].innerHTML = "<b>Running Mate</b>";
+
     } else {
-      row.children[1].innerHTML = getVP(name, vpTable);
+
+      const rawName = row.cells[0].innerText.trim();
+      const name = rawName.replace(/^[-\s]+/, "").trim();
+
+      row.cells[1].innerHTML = vpTable[name] || "—";
+
     }
+
   }
 
-  // --- HISTORICAL RESULTS TABLE ---
-  const resultsTableHistorical = resultsTableHolder.childNodes[5].childNodes[3].children[0];
+  // -------------------------
+  // HISTORICAL RESULTS TABLE
+  // -------------------------
 
-  for (let i = 0; i < resultsTableHistorical.children.length; i++) {
-    const row = resultsTableHistorical.children[i];
-    const name = row.childNodes[1].innerText;
+  const resultsTableHistorical =
+    resultsTableHolder.childNodes[5].childNodes[3].children[0];
+
+  for (let i = 0; i < resultsTableHistorical.rows.length; i++) {
+
+    const row = resultsTableHistorical.rows[i];
+
     row.insertCell(1);
 
     if (i === 0) {
-      row.children[1].innerHTML = `<span style="font-weight:bold">Running Mate</span>`;
+
+      row.cells[1].innerHTML = "<b>Running Mate</b>";
+
     } else {
-      row.children[1].innerHTML = getVP(name, vpTableHistorical);
+
+      const rawName = row.cells[0].innerText.trim();
+      const name = rawName.replace(/^[-\s]+/, "").trim();
+
+      row.cells[1].innerHTML = vpTableHistorical[name] || "—";
+
     }
+
   }
+
 }
 
-const gameWindowNode = document.getElementById("game_window");
-const candidateWatcherConfig = { attributes: true, childList: true, subtree: true };
+// -------------------------
+// OBSERVER
+// -------------------------
 
-const candidateObserver = new MutationObserver(onGameWindowChangeCandidates);
-candidateObserver.observe(gameWindowNode, candidateWatcherConfig);
+const gameWindowNode = document.getElementById("game_window");
+
+const observer = new MutationObserver(onGameWindowChangeCandidates);
+
+observer.observe(gameWindowNode, {
+  attributes: true,
+  childList: true,
+  subtree: true
+});
 
 e=campaignTrail_temp
 
+function tunnel(new_q){
+    e = campaignTrail_temp;
+    return e.questions_json[e.questions_json.map(f=>f.pk).indexOf(new_q)];
+}
+    // CYOA for VP switcher
 var changeGameDisp = (hide) => {
     disp = "";
     if (hide) {
@@ -177,8 +263,8 @@ var changeGameDisp = (hide) => {
             f.style.display = disp
     });
   };
-  
-  e.vpSwitcher = () => {
+
+e.vpSwitcher = () => {
     let potential_running_mate_pks = e.running_mate_json.filter(f=>f.fields.candidate == e.candidate_id).map(f=>f.fields.running_mate);
     let pot_run_mat = potential_running_mate_pks.map(f=>e.candidate_json.find(_f=>_f.pk===f));
     let running_mate_options = ``;
@@ -243,7 +329,6 @@ var changeGameDisp = (hide) => {
         $("#running_mate_description_window").html(screen_html);
 
     });
-
     // VP selected!
 
     $("#running_mate_id_button").click((_e)=>{
@@ -260,11 +345,10 @@ var changeGameDisp = (hide) => {
             $("#campaign_sign").html(`<p>${e.candidate_last_name}</p><p>${e.running_mate_last_name}</p>`);
             $("#running_mate_pic").attr("src", e.running_mate_image_url)
         }
-
-      $("#inner_window_4").remove();
-      changeGameDisp(false);
-  })
-}
+        $("#inner_window_4").remove();
+        changeGameDisp(false);
+    })
+  }
   
   e.cyoa = true;
 // if you already have a cyoa function, only use 1
@@ -287,6 +371,23 @@ style_overwrite.innerHTML = `
     height: 47.5em;
     text-align: center;
     position: relative;
+}
+.inner_window_question h3 {
+  background-color: #e4f0f7;
+}
+.overlay_window h3 {
+  background-color: #cfdee8;
+}
+#overall_result_container {
+  background-color: #f5f4ec;
+}
+#menu_container {
+  background-color: #f5f4ec;
+}
+#state_result_container {
+  height: 215px;
+  width: 100%;
+  background-color: #f5f4ec;
 }
 }`
 ;
