@@ -366,19 +366,23 @@ style_overwrite.innerHTML = `
     background-color: var(--primary-bg);
     margin: .5em;
     border-style: solid;
-    border-color: var(--border-color);
+    border-color: inherit;
     border-width: 3px;
-    height: 47.5em;
+    min-height: 47.5em !important;
     text-align: center;
     position: relative;
 }
 .inner_window_question h3 {
   background-color: #e4f0f7;
+  height: 55%;
 }
 .overlay_window h3 {
   background-color: #cfdee8;
 }
-#overall_result_container {
+#overall_details_container {
+  background-color: #f5f4ec;
+}
+#overall_result_container
   background-color: #f5f4ec;
 }
 #menu_container {
@@ -388,6 +392,9 @@ style_overwrite.innerHTML = `
   height: 215px;
   width: 100%;
   background-color: #f5f4ec;
+}
+#map_container {
+  height: 30.73em;
 }
 }`
 ;
