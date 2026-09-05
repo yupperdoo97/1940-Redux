@@ -10,9 +10,9 @@ e = campaignTrail_temp;
 
             $(".container")[0].style.backgroundColor = "#5a6478";
 
-            document.getElementById("header").src = "https://i.imgur.com/C43vutO.jpeg";
+            document.getElementById("header").src = "https://i.imgur.com/wQP2SWd.jpeg";
 
-            document.body.background = "https://cdn.britannica.com/39/185239-050-ACC5D1A6/soldiers-German-vehicles-Poland-September-1939.jpg";
+            document.body.background = "https://i.imgur.com/7k1ciAR.jpeg";
 
 quotes = ["“We must be the great arsenal of democracy. For us this is an emergency as serious as war itself.” ~ Franklin D. Roosevelt", "“We want Willkie! No third term!”", "“As men do not live by bread alone, they do not fight by armaments alone.” ~ Franklin Roosevelt", "“No man has the right to use the great powers of the Presidency to lead the people, indirectly, into war.” ~ Wendell Willkie", "“No nation will have the God-given right to exploit other nations.” ~ Henry Wallace", "“Stay and Finish the Job!”", "“May we never confuse honest dissent with disloyal subversion.” ~ Dwight Eisenhower", "“Never insult an alligator until after you have crossed the river.” ~ Cordell Hull", "“We know that enduring peace cannot be bought at the cost of other people's freedom.” ~ Franklin Roosevelt", "“Freedom of the press is the staff of life, for any vital democracy.” ~ Wendell Willkie", "“Too many people are thinking of security instead of opportunity. They seem more afraid of life than of death.” ~ James F. Byrnes", "Freedom of Speech; Freedom of Worship; Freedom from Want; Freedom from Fear"]
 customquote = quotes[Math.floor((Math.random() * quotes.length))]
